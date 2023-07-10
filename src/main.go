@@ -149,6 +149,8 @@ type tester struct {
 
 	// replace output column through --replace_column 1 <static data> 3 #
 	replaceColumn []ReplaceColumn
+
+	skipParserError bool
 }
 
 func newTester(name string) *tester {
@@ -403,6 +405,7 @@ func (t *tester) Run() error {
 				return errors.Annotate(err, "failed to open file")
 			}
 			for _, q := range queries {
+				t.skipParserError = true
 				// ignore all syntax error
 				t.expectedErrs = append(t.expectedErrs, "ER_PARSE_ERROR")
 
@@ -419,8 +422,8 @@ func (t *tester) Run() error {
 				t.sortedResult = false
 				t.replaceColumn = nil
 				t.expectedErrs = nil
+				t.skipParserError = false
 			}
-
 		}
 	}
 
@@ -583,7 +586,9 @@ func (t *tester) parserErrorHandle(query query, err error) error {
 	err = syntaxError(err)
 	for _, expectedErr := range t.expectedErrs {
 		if expectedErr == "ER_PARSE_ERROR" {
-			//t.writeError(query, err)
+			if !t.skipParserError {
+				t.writeError(query, err)
+			}
 			err = nil
 			break
 		}
