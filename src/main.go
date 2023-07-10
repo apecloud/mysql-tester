@@ -583,7 +583,7 @@ func (t *tester) parserErrorHandle(query query, err error) error {
 	err = syntaxError(err)
 	for _, expectedErr := range t.expectedErrs {
 		if expectedErr == "ER_PARSE_ERROR" {
-			t.writeError(query, err)
+			//t.writeError(query, err)
 			err = nil
 			break
 		}
