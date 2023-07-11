@@ -50754,19 +50754,6 @@ order by B.times_rented desc;
 400	HARDLY ROBBERS	400	4
 584	MIXED DOORS	584	4
 904	TRAIN BUNCH	904	4
-select A.store_id, B.sales
-from store A
-join (
-select cus.store_id, sum(pay.amount) sales
-from customer cus
-join payment pay
-on pay.customer_id = cus.customer_id
-group by cus.store_id
-) B
-on A.store_id = B.store_id
-order by a.store_id;
-1	36997.53
-2	30409.03
 select sto.store_id, cit.city, cou.country
 from store sto
 left join address adr
@@ -50777,28 +50764,6 @@ join country cou
 on cit.country_id = cou.country_id;
 1	Lethbridge	Canada
 2	Woodridge	Australia
-select A.*, B.sales
-from (
-select sto.store_id, cit.city, cou.country
-from store sto
-left join address adr
-on sto.address_id = adr.address_id
-join city cit
-on adr.city_id = cit.city_id
-join country cou
-on cit.country_id = cou.country_id
-) A
-join (
-select cus.store_id, sum(pay.amount) sales
-from customer cus
-join payment pay
-on pay.customer_id = cus.customer_id
-group by cus.store_id
-) B
-on A.store_id = B.store_id
-order by a.store_id;
-1	Lethbridge	Canada	36997.53
-2	Woodridge	Australia	30409.03
 select cat.name category_name, sum( IFNULL(pay.amount, 0) ) revenue
 from category cat
 left join film_category flm_cat
