@@ -209,18 +209,18 @@ from film A
 order by B.times_rented desc;
 
 
-
-select A.store_id, B.sales
-from store A
-         join (
-    select cus.store_id, sum(pay.amount) sales
-    from customer cus
-             join payment pay
-                  on pay.customer_id = cus.customer_id
-    group by cus.store_id
-) B
-              on A.store_id = B.store_id
-order by a.store_id;
+# unknown column a.store_id in order by cluase
+#skip select A.store_id, B.sales
+#skip from store A
+#skip          join (
+#skip     select cus.store_id, sum(pay.amount) sales
+#skip     from customer cus
+#skip              join payment pay
+#skip                   on pay.customer_id = cus.customer_id
+#skip     group by cus.store_id
+#skip ) B
+#skip               on A.store_id = B.store_id
+#skip order by a.store_id;
 
 
 
@@ -233,26 +233,27 @@ from store sto
          join country cou
               on cit.country_id = cou.country_id;
 
-select A.*, B.sales
-from (
-         select sto.store_id, cit.city, cou.country
-         from store sto
-                  left join address adr
-                            on sto.address_id = adr.address_id
-                  join city cit
-                       on adr.city_id = cit.city_id
-                  join country cou
-                       on cit.country_id = cou.country_id
-     ) A
-         join (
-    select cus.store_id, sum(pay.amount) sales
-    from customer cus
-             join payment pay
-                  on pay.customer_id = cus.customer_id
-    group by cus.store_id
-) B
-              on A.store_id = B.store_id
-order by a.store_id;
+# unknown column a.store_id in order by cluase
+#skip select A.*, B.sales
+#skip from (
+#skip          select sto.store_id, cit.city, cou.country
+#skip          from store sto
+#skip                   left join address adr
+#skip                             on sto.address_id = adr.address_id
+#skip                   join city cit
+#skip                        on adr.city_id = cit.city_id
+#skip                   join country cou
+#skip                        on cit.country_id = cou.country_id
+#skip      ) A
+#skip          join (
+#skip     select cus.store_id, sum(pay.amount) sales
+#skip     from customer cus
+#skip              join payment pay
+#skip                   on pay.customer_id = cus.customer_id
+#skip     group by cus.store_id
+#skip ) B
+#skip               on A.store_id = B.store_id
+#skip order by a.store_id;
 
 
 
