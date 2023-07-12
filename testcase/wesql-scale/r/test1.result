@@ -35,3 +35,6 @@ insert into t1 values ("ö");
 select * from t1 order by name;
 å
 ö
+
+select 0.9888889889 * 1.01111111911;
+0.999876652242235367879

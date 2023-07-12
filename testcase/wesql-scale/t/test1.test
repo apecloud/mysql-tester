@@ -22,3 +22,5 @@ create table t1 (name char(20) not null primary key ) ;
 insert into t1 values ("å");
 insert into t1 values ("ö");
 select * from t1 order by name;
+
+select 0.9888889889 * 1.01111111911;
