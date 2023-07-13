@@ -37,11 +37,5 @@ select * from t1 order by name;
 ö
 select 0.9888889889 * 1.01111111911;
 0.999876652242235367879
-select @@autocommit, @@client_found_rows, @@skip_query_plan_cache, @@enable_system_settings,
-@@sql_select_limit, @@transaction_mode, @@workload, @@read_after_write_timeout,
-@@session_track_gtids, @@ddl_strategy, @@socket, @@query_timeout;
-1	0	0	1	0	UNSPECIFIED	OLTP	30	off	direct	/tmp/mysql.sock	0
-set @@read_write_splitting_policy='random';
-set @@read_after_write_consistency='session';
-select @@read_write_splitting_policy, @@read_after_write_consistency;
-random	SESSION
+select @@autocommit, @@session.transaction_isolation, @@session.character_set_client;
+1	REPEATABLE-READ	utf8mb4
