@@ -24,3 +24,9 @@ insert into t1 values ("ö");
 select * from t1 order by name;
 
 select 0.9888889889 * 1.01111111911;
+select @@autocommit, @@client_found_rows, @@skip_query_plan_cache, @@enable_system_settings,
+@@sql_select_limit, @@transaction_mode, @@workload, @@read_after_write_timeout,
+@@session_track_gtids, @@ddl_strategy, @@socket, @@query_timeout;
+set @@read_write_splitting_policy='random';
+set @@read_after_write_consistency='session';
+select @@read_write_splitting_policy, @@read_after_write_consistency;
