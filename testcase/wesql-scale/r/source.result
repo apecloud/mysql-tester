@@ -50807,3 +50807,10 @@ Animation	4656.30
 Drama	4587.39
 Comedy	4383.58
 drop view top_five_genres;
+drop database if exists test;
+create database test;
+use test;
+create table t1(c int);
+insert into t1 (c) values (1);
+drop table t1;
+drop database test;

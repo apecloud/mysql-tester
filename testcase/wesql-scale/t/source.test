@@ -1,3 +1,4 @@
 --source extra/sakila-schema.sql
 --source extra/sakila-data.sql
 --source extra/sakila-queries.sql
+--source extra/check-table.sql
