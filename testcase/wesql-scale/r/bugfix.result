@@ -1,2 +1,5 @@
 set sql_mode='';
 show tables;
+create database `a-b-c`;
+use `a-b-c`;
+show tables;
