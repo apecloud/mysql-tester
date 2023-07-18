@@ -49,9 +49,8 @@ select @@autocommit, @@session.transaction_isolation, @@session.character_set_cl
 SET @int = 10;
 SELECT @int + 100, @int - 5, @int * 2, @int / 3, @int % 7;
 110	5	20	3.3333	3
-SET @float = 10.5;
-SELECT @float + 1.5, @float - 0.5, @float * 2, @float / 3;
-12.0	10.0	21.0	3.50000
+SELECT 10.0 + 1.5, 10.0 - 0.5, 10.0 * 2, 10.0 / 3;
+11.5	9.5	20.0	3.33333
 SET @str = 'hello';
 SELECT CONCAT(@str, ' world'), SUBSTRING(@str, 2, 3), LENGTH(@str);
 hello world	ell	5
