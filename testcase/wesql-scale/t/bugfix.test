@@ -6,3 +6,4 @@ show tables;
 create database `a-b-c`;
 use `a-b-c`;
 show tables;
+drop database `a-b-c`;
