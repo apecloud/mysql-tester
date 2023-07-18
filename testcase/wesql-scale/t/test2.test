@@ -50,3 +50,22 @@ use test2_db1;
 select get_lock('xyz', 10) from test2_db1.user;
 
 drop database test2_db1;
+
+# https://github.com/apecloud/wesql-scale/issues/108
+use mysql;
+select 0.9888889889 * 1.01111111911;
+select @@autocommit, @@session.transaction_isolation, @@session.character_set_client;
+SET @int = 10;
+SELECT @int + 100, @int - 5, @int * 2, @int / 3, @int % 7;
+SET @float = 10.5;
+SELECT @float + 1.5, @float - 0.5, @float * 2, @float / 3;
+SET @str = 'hello';
+SELECT CONCAT(@str, ' world'), SUBSTRING(@str, 2, 3), LENGTH(@str);
+SET @date = '2023-01-01';
+SELECT DATE_ADD(@date, INTERVAL 1 DAY), DATE_SUB(@date, INTERVAL 1 DAY),
+ DATEDIFF(@data, '2023-07-01'), YEAR(@date), MONTH(@date);
+SET @bool = true;
+SELECT !@bool, @bool AND 1, @bool OR 1 ;
+SELECT NULL = NULL, NULL != NULL, NULL IS NULL, NULL IS NOT NULL;
+SET @x = 1;
+SELECT IF(@x = 1, 'one', 'other'), CASE WHEN @x = 1 THEN 'one' ELSE 'other' END;
