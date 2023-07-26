@@ -1,0 +1,19 @@
+drop database if exists d1;
+drop database if exists d2;
+
+create database d1;
+create database d2;
+
+create table d1.t1 (c1 int);
+create table d1.t2 (c1 int);
+create table d2.t1 (c1 int);
+create table d2.t2 (c1 int);
+
+insert into d1.t1 values (1);
+insert into d1.t2 values (2);
+insert into d2.t1 values (3);
+insert into d2.t2 values (4);
+
+use d1;
+select d1t1.*, d2t1.* from t1 as d1t1 join d2.t1 as d2t1
+select d1.t1.*, t1.* from d1.t1 join d2.t1;
