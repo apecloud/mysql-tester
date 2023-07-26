@@ -13,5 +13,7 @@ insert into d2.t2 values (4);
 use d1;
 select d1t1.*, d2t1.* from t1 as d1t1 join d2.t1 as d2t1;
 1	3
+select d1.t1.*, d2.t1.* from d1.t1 join d2.t1;
+1	3
 select d1.t1.*, t1.* from d1.t1 join d2.t1;
 1	1	3
