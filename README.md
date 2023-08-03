@@ -11,7 +11,7 @@
 make build
 
 # record the test output to the result file
-./bin/mysql-tester -port 15306 -user root -path testcase/wesql-scale -record -reserve-schema
+./bin/mysql-tester -port 17100 -user root -path testcase/wesql-scale -record -reserve-schema
 
 # run all the testcases, and record the result to result.xml
 ./bin/mysql-tester -port 15306 -user root -path testcase/wesql-scale -xunitfile result.xml
