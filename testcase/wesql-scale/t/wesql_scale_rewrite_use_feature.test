@@ -21,13 +21,3 @@ select d1.t1.*, t1.* from d1.t1 join d2.t1;
 select t1.*, t1.* from d1.t1 join d2.t1;
 
 with simple_query as (select * from t1) select * from simple_query;
-
-create table d1.`dual` (c1 int);
-use d1;
-select * from `dual`;
-
-insert into d1.`dual` values (1);
-insert into `dual` values (2);
-use d2;
-insert into d1.`dual` values (3);
-select * from d1.`dual`;
