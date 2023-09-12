@@ -1,0 +1,5 @@
+set @ddl_strategy = 'online';
+
+create table t1 (c1 int primary key, c2 int);
+
+alter table t1 add column c3 int;
