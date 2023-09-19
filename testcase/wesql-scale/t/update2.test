@@ -366,8 +366,6 @@ SET sql_mode = 'NO_ENGINE_SUBSTITUTION';
 DROP TABLE IF EXISTS t1, not_exists;
 DROP VIEW IF EXISTS v1;
 
-CREATE TABLE t1 (PRIMARY KEY(pk)) AS SELECT 1 AS pk;
-
 DROP TABLE t1;
 #skip SET sql_mode = default;
 
