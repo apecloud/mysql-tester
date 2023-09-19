@@ -2778,9 +2778,9 @@ drop view v1, v2, v3;
 # Bug #15106: lost equality predicate of the form field=const in a join query
 #
 
-CREATE TABLE t1(key_a int4 NOT NULL, optimus varchar(32), PRIMARY KEY(key_a));
-CREATE TABLE t2(key_a int4 NOT NULL, prime varchar(32), PRIMARY KEY(key_a));
-CREATE table t3(key_a int4 NOT NULL, key_b int4 NOT NULL, foo varchar(32),
+CREATE TABLE t1(key_a int NOT NULL, optimus varchar(32), PRIMARY KEY(key_a));
+CREATE TABLE t2(key_a int NOT NULL, prime varchar(32), PRIMARY KEY(key_a));
+CREATE table t3(key_a int NOT NULL, key_b int NOT NULL, foo varchar(32),
                 PRIMARY KEY(key_a,key_b));
 
 INSERT INTO t1 VALUES (0,'');

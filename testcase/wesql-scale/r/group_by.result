@@ -613,7 +613,7 @@ delete from t2  where a = 2 and b = 'val-2' order by a,b,c,d limit 30;
 select c from t2 where a = 2 and b = 'val-2' group by c;
 select c from t2 where a = 2 and b = 'val-2' group by c;
 drop table t1,t2;
-create table t1 (b int4 unsigned not null);
+create table t1 (b int unsigned not null);
 insert into t1 values(3000000000);
 select * from t1;
 3000000000
