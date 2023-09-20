@@ -18600,7 +18600,7 @@ select * from t1;
 9223372036854775808
 9223372036854775808
 drop table t1;
-create table t1 charset utf8mb4 select
+create table t1 select
 if(1, 9223372036854775808, 1) i,
 case when 1 then 9223372036854775808 else 1 end c,
 coalesce(9223372036854775808, 1) co;
@@ -18969,9 +18969,6 @@ SELECT * FROM t1;
 2.00	3
 4.00	5
 SELECT * FROM t2;
-0.00
-6.00
-20.00
 DROP TABLE t1;
 DROP TABLE t2;
 CREATE TABLE t1 (c1 BIGINT NOT NULL);

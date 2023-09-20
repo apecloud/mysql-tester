@@ -69,7 +69,6 @@ CREATE TABLE t1 (
   timestamp datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
   PRIMARY KEY (id),
   KEY token (token(15)),
-  KEY timestamp (timestamp),
   UNIQUE token_2 (token(75),count,phone)
 );
 #skip SET sql_mode = default;

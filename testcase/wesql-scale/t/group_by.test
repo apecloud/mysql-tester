@@ -2007,8 +2007,8 @@ DROP TABLE t0, t1;
 
 CREATE TABLE t1(
  a INTEGER,
- b BLOB(1),
- c BLOB(1),
+ b BLOB,
+ c BLOB,
  PRIMARY KEY(a,b(1)),
  UNIQUE KEY (a,c(1))
 );
