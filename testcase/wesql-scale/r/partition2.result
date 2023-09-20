@@ -636,10 +636,7 @@ b int not null,
 c int not null,
 primary key(a,b))
 partition by key (a)
-partitions 3
-(partition x1 nodegroup 0,
-partition x2 nodegroup 1,
-partition x3 nodegroup 2);
+partitions 3;
 drop table t1;
 CREATE TABLE t1 (
 a int not null,
@@ -823,7 +820,7 @@ insert into t1 values (0,0),(1,1),(2,2),(3,3),(4,4),(5,5),(6,6);
 select * from t1 where a = 4;
 4	4
 drop table t1;
-CREATE TABLE t1 (c1 INT, c2 INT, PRIMARY KEY USING BTREE (c1,c2))
+CREATE TABLE t1 (c1 INT, c2 INT, PRIMARY KEY (c1,c2))
 PARTITION BY KEY(c2,c1) PARTITIONS 4;
 INSERT INTO t1 VALUES (0,0),(1,1),(2,2),(3,3),(4,4),(5,5),(6,6);
 SELECT * FROM t1 WHERE c1 = 4;
@@ -1550,16 +1547,15 @@ insert into t values (1);
 drop table t;
 create table t2 (b int);
 create table t1 (a int)
-PARTITION BY RANGE (b) (
+PARTITION BY RANGE (a) (
 PARTITION p1 VALUES LESS THAN (10),
 PARTITION p2 VALUES LESS THAN (20)
-) select * from t2;
+) ;
 show create table t1;
 t1	CREATE TABLE `t1` (
-  `a` int DEFAULT NULL,
-  `b` int DEFAULT NULL
+  `a` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-/*!50100 PARTITION BY RANGE (`b`)
+/*!50100 PARTITION BY RANGE (`a`)
 (PARTITION p1 VALUES LESS THAN (10) ENGINE = InnoDB,
  PARTITION p2 VALUES LESS THAN (20) ENGINE = InnoDB) */
 drop table t1, t2;

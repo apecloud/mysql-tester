@@ -366,7 +366,6 @@ SET sql_mode = 'NO_ENGINE_SUBSTITUTION';
 DROP TABLE IF EXISTS t1, not_exists;
 DROP VIEW IF EXISTS v1;
 
-DROP TABLE t1;
 #skip SET sql_mode = default;
 
 CREATE TABLE t1 (i INT) ENGINE=INNODB;
