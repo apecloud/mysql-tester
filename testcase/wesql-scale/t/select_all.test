@@ -3252,7 +3252,7 @@ insert into t1 values
   (coalesce(9223372036854775808, 1));
 select * from t1;
 drop table t1;
-create table t1 charset utf8mb4 select
+create table t1 select
   if(1, 9223372036854775808, 1) i,
   case when 1 then 9223372036854775808 else 1 end c,
   coalesce(9223372036854775808, 1) co;
