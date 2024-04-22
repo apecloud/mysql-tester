@@ -3,6 +3,7 @@
 default: build
 
 build:
+	mkdir -p bin
 	go build -o ./bin ./...
 	mv bin/src bin/mysql-tester
 
