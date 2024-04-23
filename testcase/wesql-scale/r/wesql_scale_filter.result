@@ -1,0 +1,66 @@
+create filter if not exists (
+name='test1',
+desc='test description',
+priority='999',
+status='ACTIVE'
+)
+with_pattern(
+plans='Delete',
+fully_qualified_table_names='wesql_scale_filter.t1',
+query_regex='',
+query_template='',
+request_ip_regex='',
+user_regex='',
+leading_comment_regex='',
+trailing_comment_regex='',
+bind_var_conds=''
+)
+execute(
+action='FAIL',
+action_args=''
+);
+select
+name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
+from
+mysql.wescale_plugin;
+test1	test description	999	ACTIVE	["Delete"]	["wesql_scale_filter.t1"]								FAIL	
+create table if not exists wesql_scale_filter.t1 (
+id int,
+name varchar(32)
+);
+insert into wesql_scale_filter.t1 values (1, 'a');
+select * from wesql_scale_filter.t1;
+1	a
+delete from wesql_scale_filter.t1 where id = 1;
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+alter filter test1 (
+name='test2',
+desc='test description',
+priority='998',
+status='ACTIVE'
+)
+with_pattern(
+plans='Delete',
+fully_qualified_table_names='wesql_scale_filter.t1',
+query_regex='',
+query_template='',
+request_ip_regex='',
+user_regex='',
+leading_comment_regex='',
+trailing_comment_regex='',
+bind_var_conds=''
+)
+execute(
+action='FAIL',
+action_args=''
+);
+select
+name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
+from
+mysql.wescale_plugin;
+test2	test description	998	ACTIVE	["Delete"]	["wesql_scale_filter.t1"]								FAIL	
+drop filter test2;
+select
+name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
+from
+mysql.wescale_plugin;
