@@ -44,7 +44,7 @@ CREATE TABLE t2 (
   UNIQUE fld1 (fld1),
   KEY fld3 (fld3),
   PRIMARY KEY (auto)
-) charset utf8mb4;  
+) charset utf8mb4;
 
 #
 # Populate table
@@ -1425,7 +1425,7 @@ select distinct fld5 from t2 limit 10;
 #
 
 select distinct companynr, fld3,count(*) from t2 group by companynr, fld3 order by companynr, fld3 limit 10;
-SET BIG_TABLES=1; # Force use of INNODB
+SET BIG_TABLES=1;
 select distinct companynr, fld3,count(*) from t2 group by companynr, fld3 order by companynr, fld3 limit 10;
 SET BIG_TABLES=0;
 select distinct companynr, fld3,repeat("a",length(fld3)),count(*) from t2 group by companynr ,fld3 order by companynr, fld3 limit 100,10;
@@ -1486,7 +1486,7 @@ select fld3,period from t2,t1 where companynr*10 = 37*10 order by fld3;
 
 #skip analyze table t2, t3;
 
-  select fld3,period,price,price2 from t2,t3 where t2.fld1=t3.t2nr and period >= 1001 and period <= 1002 and t2.companynr = 37 order by fld3,period, price;  # Tests how to print out BKA iterators.
+  select fld3,period,price,price2 from t2,t3 where t2.fld1=t3.t2nr and period >= 1001 and period <= 1002 and t2.companynr = 37 order by fld3,period, price;
 
 select fld3,period,price,price2 from t2,t3 where t2.fld1=t3.t2nr and period >= 1001 and period <= 1002 and t2.companynr = 37 order by fld3,period, price;
 
@@ -1726,7 +1726,7 @@ select t2.fld1,sum(price) from t3,t2 where t2.fld1 = t3.t2nr and t3.companynr = 
 # HAVING
 #
 
-select companynr,fld1 from t2 HAVING fld1=250501 or fld1=250502; 
+select companynr,fld1 from t2 HAVING fld1=250501 or fld1=250502;
 select companynr,fld1 from t2 WHERE fld1>=250501 HAVING fld1<=250502;
 select companynr,count(*) as count,sum(fld1) as sum from t2 group by companynr having count > 40 and sum/count >= 120000;
 select companynr from t2 group by companynr having count(*) > 40 and sum(fld1)/count(*) >= 120000 ;
@@ -1745,9 +1745,9 @@ select max(fld1) from t2 where fld1>= 098024;
 select count(*) from t3 where price2=76234234;
 select count(*) from t3 where companynr=512 and price2=76234234;
  select min(fld1),max(fld1),count(*) from t2;
-#skip  format=tree select min(fld1),max(fld1),count(*) from t2;  # Should be computed at optimize time.
+#skip  format=tree select min(fld1),max(fld1),count(*) from t2;
 #skip ANALYZE TABLE t2;
-#skip  format=tree select min(fld1),max(fld1),count(*) from t2 where rand() > 0.5;  # Should _not_ be computed at optimize time.
+#skip  format=tree select min(fld1),max(fld1),count(*) from t2 where rand() > 0.5;
 # PS does correct pre-zero here. MySQL can't do it as it returns a number.
 select min(fld1),max(fld1),count(*) from t2;
 select min(t2nr),max(t2nr) from t3 where t2nr=2115 and price2=823742;
@@ -2147,7 +2147,7 @@ create table t2 (f2 int, f3 int, f4 int);
 create index idx1 on t2 (f4);
 insert into t2 values (1,2,3),(2,4,6);
 select A.f2 from t1 left join t2 A on A.f2 = f1 where A.f3=(select min(f3)
-from  t2 C where A.f4 = C.f4) or A.f3 IS NULL; 
+from  t2 C where A.f4 = C.f4) or A.f3 IS NULL;
 drop table t1,t2;
 
 #
@@ -2212,7 +2212,7 @@ insert into t1 values(1,1),(2,null);
 insert into t2 values(2);
 select * from t1,t2 where f1=f3 and (f1,f2) = (2,null);
 select * from t1,t2 where f1=f3 and (f1,f2) <=> (2,null);
-drop table t1,t2; 
+drop table t1,t2;
 
 #
 # Bug #13535
@@ -2261,7 +2261,7 @@ create table t1 (f1 int,f2 int);
 insert into t1 values(1,1);
 create table t2 (f3 int, f4 int, primary key(f3,f4));
 insert into t2 values(1,1);
-select * from t1 where f1 in (select f3 from t2 where (f3,f4)= (select f3,f4 from t2)); 
+select * from t1 where f1 in (select f3 from t2 where (f3,f4)= (select f3,f4 from t2));
 drop table t1,t2;
 
 #
@@ -3280,7 +3280,7 @@ SELECT * FROM t2 ORDER BY name;
 SELECT name, LENGTH(name), n FROM t2 ORDER BY name;
 
  SELECT name, LENGTH(name), n FROM t2 WHERE name='cc ';
-SELECT name, LENGTH(name), n FROM t2 WHERE name='cc '; 
+SELECT name, LENGTH(name), n FROM t2 WHERE name='cc ';
  SELECT name , LENGTH(name), n FROM t2 WHERE name LIKE 'cc%';
 SELECT name , LENGTH(name), n FROM t2 WHERE name LIKE 'cc%';
  SELECT name , LENGTH(name), n FROM t2 WHERE name LIKE 'cc%' ORDER BY name;
@@ -3302,7 +3302,7 @@ SELECT * FROM t2 ORDER BY name;
 SELECT name, LENGTH(name), n FROM t2 ORDER BY name;
 
  SELECT name, LENGTH(name), n FROM t2 WHERE name='cc ';
-SELECT name, LENGTH(name), n FROM t2 WHERE name='cc '; 
+SELECT name, LENGTH(name), n FROM t2 WHERE name='cc ';
  SELECT name , LENGTH(name), n FROM t2 WHERE name LIKE 'cc%';
 SELECT name , LENGTH(name), n FROM t2 WHERE name LIKE 'cc%';
  SELECT name , LENGTH(name), n FROM t2 WHERE name LIKE 'cc%' ORDER BY name;
@@ -3371,7 +3371,7 @@ INSERT INTO t1 VALUES (1,1), (1,2), (1,3), (1,4), (1,5), (1, 6), (1,7);
 SELECT COUNT(*) FROM t1 f1 INNER JOIN t1 f2
     ON ( f1.b=f2.b AND f1.a<f2.a ) 
     WHERE 1 AND f1.b NOT IN (100,2232,3343,51111);
-DROP TABLE t1;    
+DROP TABLE t1;
 
 #
 # Bug #27352: Incorrect result of nested selects instead of error reporting
@@ -3548,13 +3548,13 @@ INSERT INTO t3 VALUES (1, 1, 1, 0),
 SELECT c32 FROM t1, t2, t3 WHERE t1.c11 IN (1, 3, 5) AND 
                                  t3.c31 = t1.c11 AND t2.c21 = t1.c11 AND 
                                  t3.c33 = 1 AND t2.c22 in (1, 3) 
-                           ORDER BY c32; 
+                           ORDER BY c32;
 
 # Show that ORDER BY DESC produces the correct results order
 SELECT c32 FROM t1, t2, t3 WHERE t1.c11 IN (1, 3, 5) AND 
                                  t3.c31 = t1.c11 AND t2.c21 = t1.c11 AND 
                                  t3.c33 = 1 AND t2.c22 in (1, 3) 
-                           ORDER BY c32 DESC; 
+                           ORDER BY c32 DESC;
 
 DROP TABLE t1, t2, t3;
 ###########################################################################
