@@ -1,0 +1,119 @@
+create table if not exists plugin_concurrency_control.ccl_table (
+id int,
+name varchar(32)
+);
+insert into plugin_concurrency_control.ccl_table values (1, 'a');
+insert into plugin_concurrency_control.ccl_table values (2, 'b');
+insert into plugin_concurrency_control.ccl_table values (3, 'c');
+select * from plugin_concurrency_control.ccl_table;
+1	a
+2	b
+3	c
+create filter (
+name='ccl',
+desc='test ccl',
+priority='999',
+status='ACTIVE'
+)
+with_pattern(
+plans='Delete',
+fully_qualified_table_names='plugin_concurrency_control.ccl_table',
+query_regex='',
+query_template='',
+request_ip_regex='',
+user_regex='',
+leading_comment_regex='',
+trailing_comment_regex='',
+bind_var_conds=''
+)
+execute(
+action='CONCURRENCY_CONTROL',
+action_args='max_queue_size=0; max_concurrency=0'
+);
+select
+name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
+from
+mysql.wescale_plugin;
+ccl	test ccl	999	ACTIVE	["Delete"]	["plugin_concurrency_control.ccl_table"]								CONCURRENCY_CONTROL	max_queue_size=0;max_concurrency=0
+select sleep(3);
+0
+select * from plugin_concurrency_control.ccl_table;
+1	a
+2	b
+3	c
+delete from plugin_concurrency_control.ccl_table where id = 3;
+Error 1203: target: plugin_concurrency_control.0.primary: vttablet: concurrency control protection: too many queued transactions (0 >= 0) (CallerID: userData1)
+select '# expect 3 rows for the next select';
+# expect 3 rows for the next select
+select * from plugin_concurrency_control.ccl_table;
+1	a
+2	b
+3	c
+alter filter ccl (
+desc='test ccl',
+priority='999',
+status='ACTIVE'
+)
+with_pattern(
+plans='Delete',
+fully_qualified_table_names='plugin_concurrency_control.ccl_table',
+query_regex='',
+query_template='',
+request_ip_regex='',
+user_regex='',
+leading_comment_regex='',
+trailing_comment_regex='',
+bind_var_conds=''
+)
+execute(
+action='CONCURRENCY_CONTROL',
+action_args='max_queue_size=1; max_concurrency=1'
+);
+select
+name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
+from
+mysql.wescale_plugin;
+ccl	test ccl	999	ACTIVE	["Delete"]	["plugin_concurrency_control.ccl_table"]								CONCURRENCY_CONTROL	max_queue_size=1;max_concurrency=1
+select sleep(3);
+0
+delete from plugin_concurrency_control.ccl_table where id = 3;
+select '# expect 2 rows for the next select';
+# expect 2 rows for the next select
+select * from plugin_concurrency_control.ccl_table;
+1	a
+2	b
+alter filter ccl (
+desc='test ccl',
+priority='999',
+status='ACTIVE'
+)
+with_pattern(
+plans='Delete',
+fully_qualified_table_names='plugin_concurrency_control.ccl_table',
+query_regex='',
+query_template='',
+request_ip_regex='',
+user_regex='',
+leading_comment_regex='',
+trailing_comment_regex='',
+bind_var_conds=''
+)
+execute(
+action='CONCURRENCY_CONTROL',
+action_args='max_queue_size=0; max_concurrency=0'
+);
+select
+name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
+from
+mysql.wescale_plugin;
+ccl	test ccl	999	ACTIVE	["Delete"]	["plugin_concurrency_control.ccl_table"]								CONCURRENCY_CONTROL	max_queue_size=0;max_concurrency=0
+select sleep(3);
+0
+delete from plugin_concurrency_control.ccl_table;
+Error 1203: target: plugin_concurrency_control.0.primary: vttablet: concurrency control protection: too many queued transactions (0 >= 0) (CallerID: userData1)
+select '# expect 2 rows for the next select';
+# expect 2 rows for the next select
+select * from plugin_concurrency_control.ccl_table;
+1	a
+2	b
+drop filter ccl;

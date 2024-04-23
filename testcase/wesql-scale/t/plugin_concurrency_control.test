@@ -1,13 +1,13 @@
 # Test ConcurrencyControlAction
 
-create table if not exists wesql_scale_filter.ccl_table (
+create table if not exists plugin_concurrency_control.ccl_table (
                                                      id int,
                                                      name varchar(32)
 );
-insert into wesql_scale_filter.ccl_table values (1, 'a');
-insert into wesql_scale_filter.ccl_table values (2, 'b');
-insert into wesql_scale_filter.ccl_table values (3, 'c');
-select * from wesql_scale_filter.ccl_table;
+insert into plugin_concurrency_control.ccl_table values (1, 'a');
+insert into plugin_concurrency_control.ccl_table values (2, 'b');
+insert into plugin_concurrency_control.ccl_table values (3, 'c');
+select * from plugin_concurrency_control.ccl_table;
 
 create filter (
         name='ccl',
@@ -17,7 +17,7 @@ create filter (
 )
 with_pattern(
         plans='Delete',
-        fully_qualified_table_names='wesql_scale_filter.ccl_table',
+        fully_qualified_table_names='plugin_concurrency_control.ccl_table',
         query_regex='',
         query_template='',
         request_ip_regex='',
@@ -28,18 +28,18 @@ with_pattern(
 )
 execute(
         action='CONCURRENCY_CONTROL',
-        action_args='maxQueueSize=0; max_concurrency=0'
+        action_args='max_queue_size=0; max_concurrency=0'
 );
 select
     name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
 from
     mysql.wescale_plugin;
 select sleep(3);
-select * from wesql_scale_filter.ccl_table;
+select * from plugin_concurrency_control.ccl_table;
 --error 1105
-delete from wesql_scale_filter.ccl_table where id = 3;
+delete from plugin_concurrency_control.ccl_table where id = 3;
 select '# expect 3 rows for the next select';
-select * from wesql_scale_filter.ccl_table;
+select * from plugin_concurrency_control.ccl_table;
 
 alter filter ccl (
         desc='test ccl',
@@ -48,7 +48,7 @@ alter filter ccl (
 )
 with_pattern(
         plans='Delete',
-        fully_qualified_table_names='wesql_scale_filter.ccl_table',
+        fully_qualified_table_names='plugin_concurrency_control.ccl_table',
         query_regex='',
         query_template='',
         request_ip_regex='',
@@ -59,16 +59,16 @@ with_pattern(
 )
 execute(
         action='CONCURRENCY_CONTROL',
-        action_args='maxQueueSize=1; max_concurrency=1'
+        action_args='max_queue_size=1; max_concurrency=1'
 );
 select
     name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
 from
     mysql.wescale_plugin;
 select sleep(3);
-delete from wesql_scale_filter.ccl_table where id = 3;
+delete from plugin_concurrency_control.ccl_table where id = 3;
 select '# expect 2 rows for the next select';
-select * from wesql_scale_filter.ccl_table;
+select * from plugin_concurrency_control.ccl_table;
 
 
 
@@ -79,7 +79,7 @@ alter filter ccl (
 )
 with_pattern(
         plans='Delete',
-        fully_qualified_table_names='wesql_scale_filter.ccl_table',
+        fully_qualified_table_names='plugin_concurrency_control.ccl_table',
         query_regex='',
         query_template='',
         request_ip_regex='',
@@ -90,7 +90,7 @@ with_pattern(
 )
 execute(
         action='CONCURRENCY_CONTROL',
-        action_args='maxQueueSize=0; max_concurrency=0'
+        action_args='max_queue_size=0; max_concurrency=0'
 );
 select
     name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
@@ -98,6 +98,8 @@ from
     mysql.wescale_plugin;
 select sleep(3);
 --error 1105
-delete from wesql_scale_filter.ccl_table;
+delete from plugin_concurrency_control.ccl_table;
 select '# expect 2 rows for the next select';
-select * from wesql_scale_filter.ccl_table;
+select * from plugin_concurrency_control.ccl_table;
+
+drop filter ccl;
