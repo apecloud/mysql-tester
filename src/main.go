@@ -487,37 +487,26 @@ func (t *tester) concurrentExecute(querys []query, wg *sync.WaitGroup, errOccure
 		if len(query.Query) == 0 {
 			return
 		}
-		list, _, err := tt.ctx.Parse(query.Query, "", "")
+
+		err = tt.stmtExecute2(query)
+		if err != nil && len(t.expectedErrs) > 0 {
+			for _, tStr := range t.expectedErrs {
+				if strings.Contains(err.Error(), tStr) {
+					err = nil
+					break
+				}
+			}
+		}
+		t.singleQuery = false
 		if err != nil {
 			msgs <- testTask{
 				test: t.name,
-				err:  t.parserErrorHandle(query, err),
+				err:  errors.Trace(errors.Errorf("run \"%v\" at line %d err %v", query.Query, query.Line, err)),
 			}
 			errOccured <- struct{}{}
 			return
 		}
 
-		for _, st := range list {
-			err = tt.stmtExecute(query, st)
-			if err != nil && len(t.expectedErrs) > 0 {
-				for _, tStr := range t.expectedErrs {
-					if strings.Contains(err.Error(), tStr) {
-						err = nil
-						break
-					}
-				}
-			}
-			t.singleQuery = false
-			if err != nil {
-				msgs <- testTask{
-					test: t.name,
-					err:  errors.Trace(errors.Errorf("run \"%v\" at line %d err %v", st.Text(), query.Line, err)),
-				}
-				errOccured <- struct{}{}
-				return
-			}
-
-		}
 	}
 	return
 }
@@ -625,6 +614,82 @@ func syntaxError(err error) error {
 	return parser.ErrParse.GenWithStackByArgs("You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use", err.Error())
 }
 
+func (t *tester) stmtExecute2(query query) (err error) {
+
+	stmtList, _, parseErr := t.ctx.Parse(query.Query, "", "")
+	isBegin := false
+	isCommit := false
+	isRollback := false
+	savePointName := ""
+	if parseErr == nil {
+		if len(stmtList) > 1 {
+			return fmt.Errorf("too many parsed statements")
+		}
+		st := stmtList[0]
+		switch x := st.(type) {
+		case *ast.BeginStmt:
+			isBegin = true
+		case *ast.CommitStmt:
+			isCommit = true
+		case *ast.RollbackStmt:
+			savePointName = x.SavepointName
+			isRollback = true
+		}
+	}
+
+	var qText = query.Query
+	if t.enableQueryLog {
+		t.buf.WriteString(qText)
+		t.buf.WriteString("\n")
+	}
+	if isBegin {
+		t.tx, err = t.mdb.Begin()
+		if err != nil {
+			t.rollback()
+		}
+		return err
+	} else if isCommit {
+		err = t.commit()
+		if err != nil {
+			t.rollback()
+		}
+		return err
+	} else if isRollback {
+		if savePointName == "" {
+			return t.rollback()
+		}
+	}
+	if t.tx != nil {
+		err = t.executeStmt(qText)
+		if err != nil {
+			return err
+		}
+	} else {
+		// if begin or the succeeding commit fails, we don't think
+		// this error is the expected one.
+		if t.tx, err = t.mdb.Begin(); err != nil {
+			t.rollback()
+			return err
+		}
+
+		err = t.executeStmt(qText)
+		if err != nil {
+			t.rollback()
+			return err
+		} else {
+			commitErr := t.commit()
+			if err == nil && commitErr != nil {
+				err = commitErr
+			}
+			if commitErr != nil {
+				t.rollback()
+				return err
+			}
+		}
+	}
+	return err
+}
+
 func (t *tester) stmtExecute(query query, st ast.StmtNode) (err error) {
 
 	var qText string
@@ -690,43 +755,37 @@ func (t *tester) execute(query query) error {
 	if len(query.Query) == 0 {
 		return nil
 	}
-	list, _, err := t.ctx.Parse(query.Query, "", "")
+
+	offset := t.buf.Len()
+	err := t.stmtExecute2(query)
+
+	if err != nil && len(t.expectedErrs) > 0 {
+		// TODO: check whether this err is expected.
+		// but now we think it is.
+
+		// output expected err
+		fmt.Fprintf(&t.buf, "%s\n", strings.ReplaceAll(err.Error(), "\r", ""))
+		err = nil
+	}
+	// clear expected errors after we execute the first query
+	t.expectedErrs = nil
+	t.singleQuery = false
+
 	if err != nil {
-		return t.parserErrorHandle(query, err)
+		return errors.Trace(errors.Errorf("run \"%v\" at line %d err %v", query.Query, query.Line, err))
 	}
 
-	for _, st := range list {
-		offset := t.buf.Len()
-		err = t.stmtExecute(query, st)
+	if !record {
+		// check test result now
+		gotBuf := t.buf.Bytes()[offset:]
 
-		if err != nil && len(t.expectedErrs) > 0 {
-			// TODO: check whether this err is expected.
-			// but now we think it is.
-
-			// output expected err
-			fmt.Fprintf(&t.buf, "%s\n", strings.ReplaceAll(err.Error(), "\r", ""))
-			err = nil
-		}
-		// clear expected errors after we execute the first query
-		t.expectedErrs = nil
-		t.singleQuery = false
-
-		if err != nil {
-			return errors.Trace(errors.Errorf("run \"%v\" at line %d err %v", st.Text(), query.Line, err))
+		buf := make([]byte, t.buf.Len()-offset)
+		if _, err = t.resultFD.ReadAt(buf, int64(offset)); err != nil {
+			return errors.Trace(errors.Errorf("run \"%v\" at line %d err, we got \n%s\nbut read result err %s", query.Query, query.Line, gotBuf, err))
 		}
 
-		if !record {
-			// check test result now
-			gotBuf := t.buf.Bytes()[offset:]
-
-			buf := make([]byte, t.buf.Len()-offset)
-			if _, err = t.resultFD.ReadAt(buf, int64(offset)); err != nil {
-				return errors.Trace(errors.Errorf("run \"%v\" at line %d err, we got \n%s\nbut read result err %s", st.Text(), query.Line, gotBuf, err))
-			}
-
-			if !bytes.Equal(gotBuf, buf) {
-				return errors.Trace(errors.Errorf("failed to run query \n\"%v\" \n around line %d, \nwe need(%v):\n%s\nbut got(%v):\n%s\n", query.Query, query.Line, len(buf), buf, len(gotBuf), gotBuf))
-			}
+		if !bytes.Equal(gotBuf, buf) {
+			return errors.Trace(errors.Errorf("failed to run query \n\"%v\" \n around line %d, \nwe need(%v):\n%s\nbut got(%v):\n%s\n", query.Query, query.Line, len(buf), buf, len(gotBuf), gotBuf))
 		}
 	}
 

@@ -84,7 +84,7 @@ func Write(out io.Writer, testSuite XUnitTestSuite) error {
 // version will not be the same as runtime.Version, which is always the version
 // of go used to build the gotestsum binary.
 //
-// To skip the os/exec call set the GOVERSION environment variable to the
+// To skip the os/executable call set the GOVERSION environment variable to the
 // desired value.
 func goVersion() string {
 	if version, ok := os.LookupEnv("GOVERSION"); ok {

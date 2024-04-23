@@ -66,7 +66,7 @@ var commandMap = map[string]int{
 	"disable_session_track_info": Q_DISABLE_SESSION_TRACK_INFO,
 	"enable_metadata":            Q_ENABLE_METADATA,
 	"disable_metadata":           Q_DISABLE_METADATA,
-	"exec":                       Q_EXEC,
+	"executable":                 Q_EXEC,
 	"execw":                      Q_EXECW,
 	"delimiter":                  Q_DELIMITER,
 	"disable_abort_on_error":     Q_DISABLE_ABORT_ON_ERROR,
