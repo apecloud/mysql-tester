@@ -676,7 +676,7 @@ create table t1(f1 varchar(5) key);
 insert into t1 values (1),(2);
 drop table t1;
 CREATE TABLE t1(a INT);
- INSERT INTO t1 VALUES (1),(2);
+INSERT INTO t1 VALUES (1),(2);
 set @previous_sql_mode_htnt542nh=@@sql_mode;
 set sql_mode=(select replace(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 SELECT a FROM t1 GROUP BY 'a';
