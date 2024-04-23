@@ -257,7 +257,8 @@ drop table t1;
 #
 # Bug #26186: delete order by, sometimes accept unknown column
 #
-CREATE TABLE t1 (a INT); INSERT INTO t1 VALUES (1);
+CREATE TABLE t1 (a INT);
+INSERT INTO t1 VALUES (1);
 
 
 # even columns from a table not used in query (and not even existing)

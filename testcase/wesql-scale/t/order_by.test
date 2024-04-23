@@ -581,7 +581,8 @@ DROP TABLE t1;
 # Bug #22457: Column alias in ORDER BY works, but not if in an expression
 #
 
-CREATE TABLE t1 (a INT); INSERT INTO t1 VALUES (1),(2);
+CREATE TABLE t1 (a INT);
+INSERT INTO t1 VALUES (1),(2);
 SELECT a + 1 AS num FROM t1 ORDER BY 30 - num;
 SELECT CONCAT('test', a) AS str FROM t1 ORDER BY UPPER(str);
 SELECT a + 1 AS num FROM t1 GROUP BY 30 - num;
