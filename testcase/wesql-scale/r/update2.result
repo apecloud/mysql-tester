@@ -330,7 +330,6 @@ CREATE TABLE t2 (a CHAR(2), b CHAR(2), c CHAR(2), d CHAR(2),
 INDEX idx (a,b(1),c)) ENGINE=INNODB;
 INSERT INTO t2 SELECT i, i, i, i FROM t1;
 FLUSH STATUS;
- # FLUSH is autocommit, so we put it outside of transaction
 START TRANSACTION;
 UPDATE t2 SET d = 10 WHERE b = 10 LIMIT 5;
 SET @binlog_handler_update= IF(@@global.log_bin AND @@global.binlog_format != 'STATEMENT', 1, 0);

@@ -5,7 +5,7 @@
 drop table if exists t1,t2;
 
 create table t1 (a int auto_increment , primary key (a));
-insert into t1 values (NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL); 
+insert into t1 values (NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL);
 update t1 set a=a+10 where a > 34;
 update t1 set a=a+100 where a > 0;
 update t1 set a=a+100 limit 0;
@@ -249,7 +249,7 @@ INSERT INTO t1(user_id) SELECT user_id FROM t1;
 flush status;
 SELECT user_id FROM t1 WHERE request_id=9999999999999;
 #skip show status like '%Handler_read%';
-SELECT user_id FROM t1 WHERE request_id=999999999999999999999999999999; 
+SELECT user_id FROM t1 WHERE request_id=999999999999999999999999999999;
 #skip show status like '%Handler_read%';
 UPDATE t1 SET user_id=null WHERE request_id=9999999999999;
 #skip show status like '%Handler_read%';
@@ -295,9 +295,9 @@ set tmp_table_size=1024;
 create table t1 (id int, a int, key idx(a));
 create table t2 (id int unsigned not null auto_increment primary key, a int);
 insert into t2(a) values(1),(2),(3),(4),(5),(6),(7),(8);
-insert into t2(a) select a from t2; 
 insert into t2(a) select a from t2;
-insert into t2(a) select a from t2; 
+insert into t2(a) select a from t2;
+insert into t2(a) select a from t2;
 update t2 set a=id;
 insert into t1 select * from t2;
 
@@ -307,10 +307,10 @@ select count(*) from t1 join t2 on (t1.a=t2.a);
 update t1 join t2 on (t1.a=t2.a) set t1.id=t2.id;
 
 # Increase table sizes
-insert into t2(a) select a from t2; 
-update t2 set a=id; 
-truncate t1; 
-insert into t1 select * from t2; 
+insert into t2(a) select a from t2;
+update t2 set a=id;
+truncate t1;
+insert into t1 select * from t2;
 
 # Check that the number of matched rows is correct when the temporary
 # table has to be converted to MyISAM
@@ -375,7 +375,7 @@ INSERT INTO t1 VALUES (10),(11),(12),(13),(14),(15),(16),(17),(18),(19),
 CREATE TABLE t2 (a CHAR(2), b CHAR(2), c CHAR(2), d CHAR(2),
                  INDEX idx (a,b(1),c)) ENGINE=INNODB;
 INSERT INTO t2 SELECT i, i, i, i FROM t1;
-FLUSH STATUS; # FLUSH is autocommit, so we put it outside of transaction
+FLUSH STATUS;
 START TRANSACTION;
 UPDATE t2 SET d = 10 WHERE b = 10 LIMIT 5;
 # There is one handler_update less when the binary log is enabled.
@@ -538,7 +538,7 @@ INSERT INTO t1 VALUES (0);
 #skip DELETE FROM t1 WHERE a=2;
 
 DROP TABLE t1;
-#skip SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;  # Return to default.
+#skip SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 
 
 CREATE TABLE t1 (f1 INT PRIMARY KEY, f2 INT CHECK (f2 < 400));
