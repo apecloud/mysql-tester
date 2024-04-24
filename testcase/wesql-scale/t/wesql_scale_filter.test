@@ -1,7 +1,6 @@
 # Basic syntax test for the wesql_scale_filter
 
-create filter if not exists (
-        name='test1',
+create filter if not exists test1 (
         desc='test description',
         priority='999',
         status='ACTIVE'

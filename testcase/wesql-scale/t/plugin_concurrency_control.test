@@ -9,8 +9,7 @@ insert into plugin_concurrency_control.ccl_table values (2, 'b');
 insert into plugin_concurrency_control.ccl_table values (3, 'c');
 select * from plugin_concurrency_control.ccl_table;
 
-create filter (
-        name='ccl',
+create filter ccl(
         desc='test ccl',
         priority='999',
         status='ACTIVE'
