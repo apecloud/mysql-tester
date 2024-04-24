@@ -113,7 +113,7 @@ FLUSH STATUS;
 SELECT COUNT(*) FROM t_innodb, t_archive;
 6
 DROP TABLE t_archive, t_heap;
-EXPLAIN SELECT COUNT(*) FROM t_innodb FORCE INDEX(c3_idx);
+EXPLAIN SELECT COUNT(*) FROM t_innodb FORCE INDEX(c3_idx);;
 1	SIMPLE	t_innodb	NULL	index	NULL	c3_idx	81	NULL	3	100.00	Using index
 EXPLAIN SELECT COUNT(*) FROM t_myisam FORCE INDEX(c3_idx);
 1	SIMPLE	t_myisam	NULL	index	NULL	c3_idx	81	NULL	2	100.00	Using index
