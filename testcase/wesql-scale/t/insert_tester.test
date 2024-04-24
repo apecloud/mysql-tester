@@ -109,9 +109,9 @@ set @value= "-1e+1111111111a";
 #skip insert into t1 values(null,@value,@value,@value,@value,@value,@value,@value,@value,@value);
 --query_vertical select * from t1 where number =last_insert_id()
 
---error 1367
+--error 1105
 set @value= 1e+1111111111;
---error 1367
+--error 1105
 set @value= -1e+1111111111;
 
 
