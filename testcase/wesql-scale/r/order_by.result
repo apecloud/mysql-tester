@@ -820,7 +820,7 @@ INSERT INTO t1 VALUES (1,30), (2,20), (1,10), (2,30), (1,20), (2,10);
 30	2
 DROP TABLE t1;
 CREATE TABLE t1 (a INT);
- INSERT INTO t1 VALUES (1),(2);
+INSERT INTO t1 VALUES (1),(2);
 SELECT a + 1 AS num FROM t1 ORDER BY 30 - num;
 3
 2
@@ -3444,7 +3444,6 @@ ON alias1.m = alias2.m
 GROUP BY field3
 ORDER BY UPPER(field2);
 s	1
- # The alias must be a function argument
 DROP TABLE t;
 CREATE TABLE t1 ( a INTEGER, b LONGTEXT );
 INSERT INTO t1 VALUES (1,'z');
