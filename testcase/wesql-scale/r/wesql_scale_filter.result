@@ -63,3 +63,26 @@ select
 name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
 from
 mysql.wescale_plugin;
+create filter if not exists test_query_template (
+desc='',
+priority='1000',
+status='ACTIVE'
+)
+with_pattern(
+plans='Delete',
+fully_qualified_table_names='wesql_scale_filter.t1',
+query_regex='',
+query_template='delete from wesql_scale_filter.t1',
+request_ip_regex='',
+user_regex='',
+leading_comment_regex='',
+trailing_comment_regex='',
+bind_var_conds=''
+)
+execute(
+action='FAIL',
+action_args=''
+);
+delete from wesql_scale_filter.t1;
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule:  (CallerID: userData1)
+drop filter test_query_template;

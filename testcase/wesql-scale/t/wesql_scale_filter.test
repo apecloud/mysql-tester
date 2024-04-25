@@ -69,3 +69,27 @@ select
 from
     mysql.wescale_plugin;
 
+create filter if not exists test_query_template (
+        desc='',
+        priority='1000',
+        status='ACTIVE'
+)
+with_pattern(
+        plans='Delete',
+        fully_qualified_table_names='wesql_scale_filter.t1',
+        query_regex='',
+        query_template='delete from wesql_scale_filter.t1',
+        request_ip_regex='',
+        user_regex='',
+        leading_comment_regex='',
+        trailing_comment_regex='',
+        bind_var_conds=''
+)
+execute(
+        action='FAIL',
+        action_args=''
+);
+--error 1105
+delete from wesql_scale_filter.t1;
+
+drop filter test_query_template;
