@@ -114,3 +114,5 @@ drop filter test_query_template;
 ################################################################################################
 # Test for leading_comment_regex, TODO: add more test cases
 
+################################################################################################
+# Test for trailing_comment_regex, TODO: add more test cases
