@@ -102,3 +102,26 @@ select '# expect 2 rows for the next select';
 select * from plugin_concurrency_control.ccl_table;
 
 drop filter ccl;
+
+
+
+# create filter ccl_empty_action_args(
+#         desc='test ccl',
+#         priority='999',
+#         status='ACTIVE'
+# )
+# with_pattern(
+#         plans='Delete',
+#         fully_qualified_table_names='plugin_concurrency_control.ccl_table',
+#         query_regex='',
+#         query_template='',
+#         request_ip_regex='',
+#         user_regex='',
+#         leading_comment_regex='',
+#         trailing_comment_regex='',
+#         bind_var_conds=''
+# )
+# execute(
+#         action='CONCURRENCY_CONTROL',
+#         action_args=''
+# );

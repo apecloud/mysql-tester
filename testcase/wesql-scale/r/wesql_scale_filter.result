@@ -31,7 +31,7 @@ insert into wesql_scale_filter.t1 values (1, 'a');
 select * from wesql_scale_filter.t1;
 1	a
 delete from wesql_scale_filter.t1 where id = 1;
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test1 (CallerID: userData1)
 alter filter test1 (
 name='test2',
 desc='test description',
@@ -84,5 +84,5 @@ action='FAIL',
 action_args=''
 );
 delete from wesql_scale_filter.t1;
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule:  (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test_query_template (CallerID: userData1)
 drop filter test_query_template;

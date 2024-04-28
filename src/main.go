@@ -472,8 +472,7 @@ func (t *tester) concurrentRun(concurrentQueue []query, concurrentSize int) erro
 func (t *tester) concurrentExecute(querys []query, wg *sync.WaitGroup, errOccured chan struct{}) {
 	defer wg.Done()
 	tt := newTester(t.name)
-	dbName := "test"
-	mdb, err := OpenDBWithRetry("mysql", user+":"+passwd+"@tcp("+host+":"+port+")/"+dbName+"?time_zone=%27Asia%2FShanghai%27&allowAllFiles=true"+params, retryConnCount)
+	mdb, err := OpenDBWithRetry("mysql", user+":"+passwd+"@tcp("+host+":"+port+")/"+dbName+"?allowAllFiles=true"+params, retryConnCount)
 	if err != nil {
 		log.Fatalf("Open db err %v", err)
 	}
