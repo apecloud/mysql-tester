@@ -33,7 +33,7 @@ insert into wesql_scale_filter.t1 values (1, 'a');
 select * from wesql_scale_filter.t1;
 1	a
 delete from wesql_scale_filter.t1 where id = 1;
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test1 (CallerID: userData1)
 alter filter test1 (
 name='test2',
 desc='test description',
@@ -107,14 +107,14 @@ action='FAIL',
 action_args=''
 );
 insert into wesql_scale_filter.t1 values (123, 'abc');
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test_plans (CallerID: userData1)
 select * from wesql_scale_filter.t1;
 1	a
 alter filter test_plans with_pattern(plans='');
 insert into wesql_scale_filter.t1 values (123, 'abc');
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test_plans (CallerID: userData1)
 select * from wesql_scale_filter.t1;
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test_plans (CallerID: userData1)
 alter filter test_plans with_pattern(plans='update');
 insert into wesql_scale_filter.t1 values (123, 'abc');
 select * from wesql_scale_filter.t1;
@@ -142,11 +142,11 @@ action='FAIL',
 action_args=''
 );
 select * from wesql_scale_filter.t1;
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test_query_regex (CallerID: userData1)
 select * from wesql_scale_filter.t1 where id = 100;
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test_query_regex (CallerID: userData1)
 select * from wesql_scale_filter.t1 where id = 100 and name = '123';
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test_query_regex (CallerID: userData1)
 alter filter test_query_regex with_pattern(query_regex='select id .*');
 select * from wesql_scale_filter.t1;
 1	a
@@ -187,14 +187,14 @@ action='FAIL',
 action_args=''
 );
 select * from wesql_scale_filter.t1;
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: fq_table_names_plans (CallerID: userData1)
 alter filter fq_table_names_plans with_pattern(fully_qualified_table_names='wesql_scale_filter.t2');
 select * from wesql_scale_filter.t1;
 1	a
 123	abc
 alter filter fq_table_names_plans with_pattern(fully_qualified_table_names='');
 select * from wesql_scale_filter.t1;
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: fq_table_names_plans (CallerID: userData1)
 drop filter fq_table_names_plans;
 create filter if not exists request_ip_reg (
 desc='test description',
@@ -221,7 +221,7 @@ select * from wesql_scale_filter.t1;
 123	abc
 alter filter request_ip_reg with_pattern(request_ip_regex='');
 select * from wesql_scale_filter.t1;
-Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: test description (CallerID: userData1)
+Error 1105: target: wesql_scale_filter.0.primary: vttablet: disallowed due to rule: request_ip_reg (CallerID: userData1)
 drop filter request_ip_reg;
 create filter if not exists leading_comment_reg (
 desc='test description',
