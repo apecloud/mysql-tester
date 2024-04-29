@@ -2,6 +2,8 @@ create table if not exists plugin_concurrency_control.ccl_table (
 id int,
 name varchar(32)
 );
+select sleep(5);
+0
 insert into plugin_concurrency_control.ccl_table values (1, 'a');
 insert into plugin_concurrency_control.ccl_table values (2, 'b');
 insert into plugin_concurrency_control.ccl_table values (3, 'c');
