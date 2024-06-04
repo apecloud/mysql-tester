@@ -35,7 +35,6 @@ select
 name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
 from
 mysql.wescale_plugin;
-allow_list	a built-in filter to help SQLs on certain system tables skip all filters	0	ACTIVE	["Select","Insert","Update","Delete"]	["mysql.wasm_binary"]								SKIP_FILTER	skip_filter_regex=".*"
 ccl	test ccl	999	ACTIVE	["Delete"]	["plugin_concurrency_control.ccl_table"]								CONCURRENCY_CONTROL	max_queue_size=0;max_concurrency=0
 select sleep(3);
 0
@@ -75,7 +74,6 @@ select
 name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
 from
 mysql.wescale_plugin;
-allow_list	a built-in filter to help SQLs on certain system tables skip all filters	0	ACTIVE	["Select","Insert","Update","Delete"]	["mysql.wasm_binary"]								SKIP_FILTER	skip_filter_regex=".*"
 ccl	test ccl	999	ACTIVE	["Delete"]	["plugin_concurrency_control.ccl_table"]								CONCURRENCY_CONTROL	max_queue_size=1;max_concurrency=1
 select sleep(3);
 0
@@ -109,7 +107,6 @@ select
 name,description,priority,status,plans,fully_qualified_table_names,query_regex,query_template,request_ip_regex,user_regex,leading_comment_regex,trailing_comment_regex,bind_var_conds,action,action_args
 from
 mysql.wescale_plugin;
-allow_list	a built-in filter to help SQLs on certain system tables skip all filters	0	ACTIVE	["Select","Insert","Update","Delete"]	["mysql.wasm_binary"]								SKIP_FILTER	skip_filter_regex=".*"
 ccl	test ccl	999	ACTIVE	["Delete"]	["plugin_concurrency_control.ccl_table"]								CONCURRENCY_CONTROL	max_queue_size=0;max_concurrency=0
 select sleep(3);
 0
