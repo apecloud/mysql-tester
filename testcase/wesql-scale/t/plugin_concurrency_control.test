@@ -36,7 +36,7 @@ from
     mysql.wescale_plugin;
 select sleep(3);
 select * from plugin_concurrency_control.ccl_table;
---error 1105
+--error 1203
 delete from plugin_concurrency_control.ccl_table where id = 3;
 select '# expect 3 rows for the next select';
 select * from plugin_concurrency_control.ccl_table;
@@ -97,7 +97,7 @@ select
 from
     mysql.wescale_plugin;
 select sleep(3);
---error 1105
+--error 1203
 delete from plugin_concurrency_control.ccl_table;
 select '# expect 2 rows for the next select';
 select * from plugin_concurrency_control.ccl_table;
