@@ -392,8 +392,8 @@ INSERT INTO PROJ VALUES  ('P6','PAYR','Design',50000,'Deale');
 #skip                            HAVING HU.PROJ.CITY = HU.STAFF.CITY);
 
 DROP SCHEMA HU;
-create database test;
-USE test;
+create database test_having2;
+USE test_having2;
 #
 # Bug#18739: non-standard HAVING extension was allowed in strict ANSI sql mode.
 #
@@ -895,4 +895,6 @@ CREATE TABLE t2 LIKE t1;
 
 DROP TABLE t1;
 DROP TABLE t2;
-drop database test;
+
+drop view v1;
+drop database test_having2;
