@@ -1,0 +1,50 @@
+drop database if exists test_explain_create_table;
+create database if not exists test_explain_create_table;
+set @@enable_declarative_ddl=true;
+explain create table t1(id int primary key);
+CREATE TABLE `explain_create_table`.`t1` (
+	`id` int NOT NULL,
+	PRIMARY KEY (`id`)
+)
+set @@enable_declarative_ddl=false;
+use test_explain_create_table;
+explain create table t1(id int primary key);
+CREATE TABLE `test_explain_create_table`.`t1` (
+	`id` int NOT NULL PRIMARY KEY
+)
+set @@enable_declarative_ddl=true;
+explain create table t1(id int primary key);
+CREATE TABLE `test_explain_create_table`.`t1` (
+	`id` int NOT NULL,
+	PRIMARY KEY (`id`)
+)
+create table t1(id int primary key);
+explain create table t1(id int primary key);
+set @@enable_declarative_ddl=false;
+explain create table t1(id int primary key);
+CREATE TABLE `test_explain_create_table`.`t1` (
+	`id` int NOT NULL PRIMARY KEY
+)
+set @@ddl_strategy='online';
+explain create table t1(id int primary key);
+CREATE TABLE `test_explain_create_table`.`t1` (
+	`id` int NOT NULL PRIMARY KEY
+)
+set @@ddl_strategy='direct';
+explain create table t1(id varchar(64) primary key, age int, height int);
+CREATE TABLE `test_explain_create_table`.`t1` (
+	`id` varchar(64) NOT NULL PRIMARY KEY,
+	`age` int,
+	`height` int
+)
+set @@enable_declarative_ddl=true;
+explain create table t1(id varchar(64) primary key, age int, height int);
+ALTER TABLE `test_explain_create_table`.`t1` MODIFY COLUMN `id` varchar(64) NOT NULL, ADD COLUMN `age` int, ADD COLUMN `height` int
+explain create table t1(id int primary key, context1 text, context2 text);
+ALTER TABLE `test_explain_create_table`.`t1` ADD COLUMN `context1` text, ADD COLUMN `context2` text
+create table t1(id int primary key, context1 text, context2 text);
+explain create table t1(id int primary key, context1 text, context2 text, fulltext idx_ctx1(context1), fulltext idx_ctx2(context2));
+ALTER TABLE `test_explain_create_table`.`t1` ADD FULLTEXT KEY `idx_ctx1` (`context1`)
+ALTER TABLE `test_explain_create_table`.`t1` ADD FULLTEXT KEY `idx_ctx2` (`context2`)
+set @@enable_declarative_ddl=false;
+drop database if exists test_explain_create_table;
