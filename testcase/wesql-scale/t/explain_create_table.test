@@ -1,0 +1,58 @@
+drop database if exists test_explain_create_table;
+
+create database if not exists test_explain_create_table;
+
+set @@enable_declarative_ddl=true;
+
+# should get error because database not set
+--error 1105
+explain create table t1(id int primary key);
+
+set @@enable_declarative_ddl=false;
+
+use test_explain_create_table;
+
+# should get original create ddl
+explain create table t1(id int primary key);
+
+set @@enable_declarative_ddl=true;
+
+# should get original create ddl, because table is not created yet
+explain create table t1(id int primary key);
+
+create table t1(id int primary key);
+
+# should get nothing
+explain create table t1(id int primary key);
+
+set @@enable_declarative_ddl=false;
+
+# should get original create ddl, because @@enable_declarative_ddl is false
+explain create table t1(id int primary key);
+
+set @@ddl_strategy='online';
+
+# should get original create ddl, because @@enable_declarative_ddl is false, and the ddl_strategy showed in Info should be 'online'
+explain create table t1(id int primary key);
+
+set @@ddl_strategy='direct';
+
+# should get original create ddl, because @@enable_declarative_ddl is false
+explain create table t1(id varchar(64) primary key, age int, height int);
+
+set @@enable_declarative_ddl=true;
+
+# should be one alter ddl
+explain create table t1(id varchar(64) primary key, age int, height int);
+
+# should be one alter ddl
+explain create table t1(id int primary key, context1 text, context2 text);
+
+create table t1(id int primary key, context1 text, context2 text);
+
+# should be two alter ddl
+explain create table t1(id int primary key, context1 text, context2 text, fulltext idx_ctx1(context1), fulltext idx_ctx2(context2));
+
+# clean up
+set @@enable_declarative_ddl=false;
+drop database if exists test_explain_create_table;
