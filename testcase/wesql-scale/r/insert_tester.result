@@ -73,9 +73,9 @@ set @value= "aa1";
 set @value= "1e+1111111111a";
 set @value= "-1e+1111111111a";
 set @value= 1e+1111111111;
-Error 1105: strconv.ParseFloat: parsing "1e+1111111111": value out of range
+Error 1367: Illegal double '1e+1111111111' value found during parsing
 set @value= -1e+1111111111;
-Error 1105: strconv.ParseFloat: parsing "1e+1111111111": value out of range
+Error 1367: Illegal double '1e+1111111111' value found during parsing
 set @value= 1e+111;
 set @value= -1e+111;
 set @value= 1;

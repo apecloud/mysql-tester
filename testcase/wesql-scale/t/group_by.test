@@ -368,7 +368,7 @@ CREATE TABLE t1 (
   value int(11) unsigned NOT NULL default '0',
   UNIQUE KEY pid2 (pid,c1id,c2id),
   UNIQUE KEY pid (pid,value)
-) ENGINE=INNODB;
+) ;
 
 INSERT INTO t1 VALUES (1, 1, NULL, 1),(1, 2, NULL, 2),(1, NULL, 3, 3),(1, 4, NULL, 4),(1, 5, NULL, 5);
 
@@ -376,7 +376,7 @@ CREATE TABLE t2 (
   id int(11) unsigned NOT NULL default '0',
   active enum('Yes','No') NOT NULL default 'Yes',
   PRIMARY KEY  (id)
-) ENGINE=INNODB;
+) ;
 
 INSERT INTO t2 VALUES (1, 'Yes'),(2, 'No'),(4, 'Yes'),(5, 'No');
 
@@ -559,7 +559,7 @@ DROP TABLE t1;
 
 # Following is a Myisam specific bug.
 # Test for BUG#9213 GROUP BY query on utf-8 key returns wrong results
-create table t1(a int) ENGINE=INNODB;
+create table t1(a int) ;
 insert into t1 values (0),(1),(2),(3),(4),(5),(6),(8),(9);
 create table t2 (
   a int,
@@ -568,7 +568,7 @@ create table t2 (
   d varchar(100) NOT NULL,
   primary key (a,b(132),c,d),
   key a (a,b)
-) ENGINE=INNODB charset=utf8;
+)  charset=utf8;
 
 #skip insert into t2 select
 #skip    x3.a,  -- 3
@@ -1515,13 +1515,13 @@ CREATE TABLE it (
   pk INT NOT NULL,
   col_int_nokey INT NOT NULL,
   PRIMARY KEY (pk)
-) ENGINE=INNODB;
+) ;
 
 CREATE TABLE ot (
   pk int(11) NOT NULL,
   col_int_nokey int(11) NOT NULL,
   PRIMARY KEY (pk)
-) ENGINE=INNODB;
+) ;
 INSERT INTO ot VALUES (10,8);
 
 set @previous_sql_mode_htnt542nh=@@sql_mode;
@@ -1535,10 +1535,10 @@ set @@sql_mode=@previous_sql_mode_htnt542nh;
 
 DROP TABLE it,ot;
 
-CREATE TABLE t1 (i INT) ENGINE=INNODB;
+CREATE TABLE t1 (i INT) ;
 INSERT INTO t1 VALUES (1);
 
-CREATE TABLE t2 (j INT) ENGINE=INNODB;
+CREATE TABLE t2 (j INT) ;
 INSERT INTO t2 VALUES (1),(2);
 
 set @previous_sql_mode_htnt542nh=@@sql_mode;
@@ -1553,14 +1553,14 @@ DROP TABLE t1,t2;
 
 CREATE TABLE t1 (
   a varchar(1)
-) ENGINE=INNODB;
+) ;
 
 INSERT INTO t1 VALUES ('a'), ('b');
 
 CREATE TABLE t2 (
   a varchar(1),
   b int(11)
-) ENGINE=INNODB;
+) ;
 
 INSERT INTO t2 VALUES ('a',1);
 
@@ -1892,7 +1892,7 @@ SELECT SUM(a) FROM t1 ORDER BY (SELECT COUNT(t1.a) FROM t1 AS t2);
 DROP TABLE t1;
 
 
-CREATE TABLE r(c BLOB) ENGINE=INNODB;
+CREATE TABLE r(c BLOB) ;
 
 INSERT INTO r VALUES('');
 
@@ -1920,7 +1920,7 @@ key (col_varchar_1024_utf8_key ),
 key (col_varchar_1024_latin1_key ),
 key (col_varchar_10_utf8_key ),
 key (col_varchar_10_latin1_key ),
-key (col_int_key )) ENGINE=innodb ROW_FORMAT=DYNAMIC;
+key (col_int_key ))  ROW_FORMAT=DYNAMIC;
 
 CREATE OR REPLACE VIEW view_AA AS SELECT * FROM AA;
 
@@ -1941,7 +1941,7 @@ key (col_varchar_10_utf8_key ),
 key (col_int_key ),
 key (col_varchar_1024_utf8_key ),
 primary key (pk),
-key (col_varchar_10_latin1_key )) ENGINE=INNODB;
+key (col_varchar_10_latin1_key )) ;
 
 # Data too long for column 'col_varchar_10_latin1' at row 1
 #skip INSERT INTO B VALUES  ('at', repeat('a',1000), 'the',
@@ -1965,7 +1965,7 @@ SET @@sql_mode = @old_sql_mode;
 #skip SET sql_mode = default;
 
 
-CREATE TABLE t1(a INT, b INT) ENGINE=INNODB;
+CREATE TABLE t1(a INT, b INT) ;
 INSERT INTO t1 VALUES (1,2), (3,4);
 
 SELECT
@@ -2036,7 +2036,7 @@ DROP TABLE t1;
 
 
 CREATE TABLE cc (pk int,  i int, c varchar(1),
-                 PRIMARY KEY (pk, i), KEY c_key(c)) ENGINE=InnoDB;
+                 PRIMARY KEY (pk, i), KEY c_key(c)) ;
 
 SELECT c, i, pk FROM cc WHERE (cc.pk = 1)  GROUP BY c, i, pk;
 

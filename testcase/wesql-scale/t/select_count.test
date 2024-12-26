@@ -8,7 +8,7 @@
 CREATE TABLE t_innodb(c1 INT NOT NULL PRIMARY KEY,
                       c2 INT NOT NULL,
                       c3 char(20),
-                      KEY c3_idx(c3))ENGINE=INNODB;
+                      KEY c3_idx(c3));
 
 INSERT INTO t_innodb VALUES (1, 1, 'a'), (2,2,'a'), (3,3,'a');
 #skip ANALYZE TABLE t_innodb;
@@ -16,7 +16,7 @@ INSERT INTO t_innodb VALUES (1, 1, 'a'), (2,2,'a'), (3,3,'a');
 CREATE TABLE t_myisam(c1 INT NOT NULL PRIMARY KEY,
                       c2 INT NOT NULL DEFAULT 1,
                       c3 char(20),
-                      KEY c3_idx(c3)) ENGINE=MYISAM;
+                      KEY c3_idx(c3));
 
 INSERT INTO t_myisam(c1) VALUES (1), (2);
 #skip ANALYZE TABLE t_myisam;
@@ -50,7 +50,7 @@ SELECT MIN(c3), COUNT(*) FROM t_innodb;
 # This WL should affect a table with no primary key only to the extent that
 # call to records happens in execution phase now. 
 
-CREATE TABLE t_nopk(c1 INT NOT NULL , c2 INT NOT NULL)ENGINE=INNODB;
+CREATE TABLE t_nopk(c1 INT NOT NULL , c2 INT NOT NULL);
 INSERT INTO t_nopk SELECT c1, c2 FROM t_innodb;
 #skip ANALYZE TABLE t_nopk;
 SHOW CREATE TABLE t_nopk;
@@ -76,11 +76,11 @@ DROP TABLE t_nopk;
 # Set of tests to check if records / records_from_index are called correctly.
 
 CREATE TABLE t_innodb_nopk_sk(c1 INT NOT NULL,
-                              c2 INT NOT NULL, KEY c2_idx(c2))ENGINE=INNODB;
+                              c2 INT NOT NULL, KEY c2_idx(c2));
 CREATE TABLE t_innodb_pk_nosk(c1 INT NOT NULL PRIMARY KEY,
-                              c2 INT NOT NULL)ENGINE=INNODB;
+                              c2 INT NOT NULL);
 CREATE TABLE t_innodb_nopk_nosk(c1 INT NOT NULL,
-                                c2 INT NOT NULL)ENGINE=INNODB;
+                                c2 INT NOT NULL);
 INSERT INTO t_innodb_nopk_sk(c1,c2) VALUES (1, 1), (2,2), (3,3);
 INSERT INTO t_innodb_pk_nosk(c1,c2) SELECT * FROM t_innodb_nopk_sk;
 INSERT INTO t_innodb_nopk_nosk(c1,c2) SELECT * FROM t_innodb_nopk_sk;
